@@ -58,20 +58,25 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-window.addEventListener('keydown',function(e){
-  //display key code hit on keyboard
-  console.log(e.keyCode);
-  //check if key code equals data-key
+
+function playSound(e){
   const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-  //diplays the data-key and the file that will play
-  console.log(audio);
-  //error if code does not exist
-  if(!audio) return;
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+  if(!audio) return; // stops function
+  
   audio.currentTime = 0; //rewinds the audio if key is hit again during play
   audio.play();
-});
+  key.classList.add('playing');
+}
+function removeTransition(e) {
+  if(e.propertyName !== 'transform') return;
+  this.classList.remove('playing');
+}
+
+const key = document.querySelectorAll('.key');
+key.forEach(key => key.addEventListener('transitionend', removeTransition));
+window.addEventListener('keydown', playSound);
+
 </script>
-
-
 </body>
 </html>
